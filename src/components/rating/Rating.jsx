@@ -1,5 +1,21 @@
 import React from 'react'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+
+
+
+Rating.propTypes = {
+  numStars: PropTypes.number.isRequired,
+  defaultRating: PropTypes.number,
+  color: PropTypes.string,
+  size: PropTypes.number,
+  messages: PropTypes.array,
+  className: PropTypes.string,
+  onSetRating : PropTypes.func
+
+}
+
+
 
 const containerStyle = {
   display: "flex",
@@ -18,13 +34,17 @@ export default function Rating(
     color="#fcc419",
     size=48,
     className ="",
+    messages =[],
+    defaultRating = 0,
+    onSetRating
   })
 {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
 
   function handleRating(rating) {
     setRating(rating);
+    onSetRating(rating)
   }
 
   const textStyle = {
@@ -51,7 +71,7 @@ export default function Rating(
         ))}
       </div>
       <p style={textStyle}>
-        {tempRating || rating || ""}
+        {messages.length === numStars?messages[tempRating?tempRating-1:rating-1]:tempRating || rating || ""}
       </p>
     </div>
   );
