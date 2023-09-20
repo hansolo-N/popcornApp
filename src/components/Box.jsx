@@ -9,7 +9,7 @@ function Box({children}) {
     <div className="box">
     <Button isOpen ={isOpen} setIsOpen ={setIsOpen}/>
   {isOpen && (
-        {children}
+        children
   )}
 </div>
 

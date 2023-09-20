@@ -5,7 +5,9 @@ import Results from './components/Results'
 import Nav from "./components/Nav";
 import List from './components/List'
 import Box from "./components/Box";
-import WatchedBox from "./components/WatchedBox";
+import Rating from './components/rating/Rating'
+import Summary from './components/Summary'
+import WatchedMoviesList from './components/WatchedMoviesList'
 import Main from "./components/Main";
 
 const tempMovieData = [
@@ -69,7 +71,7 @@ export default function App() {
 
   return (
     <>
-      <Nav movies={movies}>
+      <Nav >
         <Logo/>
         <Search/>
         <Results movies={movies}/>
@@ -78,9 +80,11 @@ export default function App() {
         <Box>
           <List movies={movies}/>
         </Box>
-        <WatchedBox watched={watched} movies={movies}/>
+        <Box>
+          <Summary watched={watched}/>
+          <WatchedMoviesList watched={watched}/>
+        </Box>
       </Main>
-      
       
     </>
   );
