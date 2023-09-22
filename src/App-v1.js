@@ -5,7 +5,7 @@ import Results from './components/Results'
 import Nav from "./components/Nav";
 import List from './components/List'
 import Box from "./components/Box";
-import Rating from './components/rating/Rating'
+import Loader from "./components/Loader"
 import Summary from './components/Summary'
 import WatchedMoviesList from './components/WatchedMoviesList'
 import Main from "./components/Main";
@@ -67,17 +67,22 @@ export default function App() {
 
   const [movies, setMovies] = useState([]);
   const [watched,setWatched] = useState(tempWatchedData);
+  const [isLoading,setIsLoading] = useState(false)
 
 
   async function searchMovies(){
+    setIsLoading(true)
     const response = await fetch(api_url+"s=inception")
     const data = await response.json()
     setMovies(data.Search)
+    setIsLoading(false)
   }
   
 
   useEffect(function(){
+  
    searchMovies()
+   
   },[])
 
   return (
@@ -89,7 +94,7 @@ export default function App() {
       </Nav>
       <Main>
         <Box>
-          <List movies={movies}/>
+          {isLoading?<Loader/>:<List movies={movies}/>}
         </Box>
         <Box>
           <Summary watched={watched}/>
