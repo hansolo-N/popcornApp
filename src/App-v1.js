@@ -68,17 +68,46 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched,setWatched] = useState(tempWatchedData);
   const [isLoading,setIsLoading] = useState(false)
+  const [error,setError] = useState("")
 
 
+  //api request to fetch movie data
   async function searchMovies(){
     setIsLoading(true)
-    const response = await fetch(api_url+"s=inception")
-    const data = await response.json()
-    setMovies(data.Search)
-    setIsLoading(false)
-  }
-  
+    try {
+      const response = await fetch(api_url+"s=inception")
 
+      if(!response.ok){
+        throw new Error ("something went wrong with fetching lovie list")
+      }
+      const data = await response.json()
+      setMovies(data.Search)
+
+      if(data.response ==="False" ) throw new Error("Movie not found")
+      
+    } catch (err) {
+      console.log(err.message)
+      setError(err.message)
+    }
+    finally{
+      setIsLoading(false) 
+    }
+
+
+  }
+
+function ErrorMessage({message}){
+  
+  return <p className="error">
+    <span>🙈</span>{message}
+  </p>
+
+}
+
+
+
+  
+//loads movie data on mount
   useEffect(function(){
   
    searchMovies()
@@ -94,7 +123,9 @@ export default function App() {
       </Nav>
       <Main>
         <Box>
-          {isLoading?<Loader/>:<List movies={movies}/>}
+          {isLoading && <Loader/>}
+          {!isLoading && !error && <List movies={movies}/>}
+          {error && <ErrorMessage message={error}/>}
         </Box>
         <Box>
           <Summary watched={watched}/>
