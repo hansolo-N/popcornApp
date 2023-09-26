@@ -1,11 +1,12 @@
 import React from 'react'
 
-function Results({movies}) {
+function Results({ movies }) {
   return (
     <p className="num-results">
-    Found <strong>{movies.length}</strong> results
-  </p>
-  )
+      {movies?<strong>Found {movies.length} Results</strong>:<strong>Found 0 Results</strong>}
+      
+    </p>
+  );
 }
 
 export default Results

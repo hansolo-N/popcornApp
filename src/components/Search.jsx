@@ -1,8 +1,7 @@
 import React from 'react'
-import { useState } from 'react';
 
-function Search() {
-    const [query, setQuery] = useState("");
+function Search({query,setQuery}) {
+    
   return (
     <input
           className="search"
