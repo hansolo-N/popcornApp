@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Movie({movie}) {
+function Movie({movie,handleID}) {
   return (
-    <li >
+    <li onClick={handleID}>
                   <img src={movie.Poster} alt={`${movie.Title} poster`} />
                   <h3>{movie.Title}</h3>
                   <div>

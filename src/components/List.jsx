@@ -1,11 +1,11 @@
 import React from 'react'
 import Movie from './Movie'
 
-function List({movies}) {
+function List({movies,handleId}) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
               {movies?.map((movie) => (
-                <Movie key={movie.imdbID} movie={movie}/>
+                <Movie key={movie.imdbID} movie={movie} handleID={()=>handleId(movie.imdbID)}/>
               ))}
     </ul>
   )

@@ -9,6 +9,7 @@ import Loader from "./components/Loader"
 import Summary from './components/Summary'
 import WatchedMoviesList from './components/WatchedMoviesList'
 import Main from "./components/Main";
+import SelectedMovie from "./components/SelectedMovie";
 
 
   
@@ -22,8 +23,17 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectId,setSelectedId] = useState(null)
   const [error, setError] = useState("");
 
+
+function handleId(id){
+  setSelectedId(id)
+}
+
+function handleCloseMovie(){
+  setSelectedId(null)
+}
 
 
 function ErrorMessage({message}){
@@ -75,12 +85,17 @@ function ErrorMessage({message}){
       <Main>
         <Box>
           {isLoading && <Loader/>}
-          {!isLoading && !error && <List movies={movies}/>}
+          {!isLoading && !error && <List movies={movies} handleId={handleId}  handleCloseMovie={handleCloseMovie}/>}
           {error && <ErrorMessage message={error}/>}
         </Box>
         <Box>
+          {selectId ? <SelectedMovie selectedId={selectId} handleCloseMovie={handleCloseMovie}/>:
+          <>
           <Summary watched={watched}/>
           <WatchedMoviesList watched={watched}/>
+          </>
+          }
+          
         </Box>
       </Main>
       
