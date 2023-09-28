@@ -42,9 +42,17 @@ async function getMovieDetails(id){
   
 }
 
+
 getMovieDetails(selectedId)
 
 },[selectedId])
+
+useEffect(function(){
+  if(!title) return
+  document.title = `Movie | ${title}`
+  
+},[title])
+
 
 function handleAdd(){
   const newWatchedMovie = {
