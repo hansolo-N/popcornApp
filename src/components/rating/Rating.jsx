@@ -44,7 +44,7 @@ export default function Rating(
 
   function handleRating(rating) {
     setRating(rating);
-    onSetRating(rating)
+    // onSetRating(rating)
   }
 
   const textStyle = {

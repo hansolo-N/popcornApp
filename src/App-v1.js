@@ -9,7 +9,7 @@ import Loader from "./components/Loader"
 import Summary from './components/Summary'
 import WatchedMoviesList from './components/WatchedMoviesList'
 import Main from "./components/Main";
-import SelectedMovie from "./components/SelectedMovie";
+import MovieDetails from "./components/MovieDetails";
 
 
   
@@ -28,7 +28,7 @@ export default function App() {
 
 
 function handleId(id){
-  setSelectedId(id)
+  setSelectedId((selectId)=>selectId===id?null:id)
 }
 
 function handleCloseMovie(){
@@ -67,7 +67,11 @@ function ErrorMessage({message}){
       finally{
         setIsLoading(false) 
       }
-  
+      if(query.length<3){
+        setMovies([])
+        setError("")
+        return
+      }
       
     }
     searchMovies()
@@ -89,7 +93,7 @@ function ErrorMessage({message}){
           {error && <ErrorMessage message={error}/>}
         </Box>
         <Box>
-          {selectId ? <SelectedMovie selectedId={selectId} handleCloseMovie={handleCloseMovie}/>:
+          {selectId ? <MovieDetails selectedId={selectId} handleCloseMovie={handleCloseMovie}/>:
           <>
           <Summary watched={watched}/>
           <WatchedMoviesList watched={watched}/>
