@@ -57,27 +57,37 @@ function handleDeleteWatched (id){
   //api request to fetch movie data
 //loads movie data on mount
   useEffect(function(){
-  
+    const controller = new AbortController()
+    
     async function searchMovies(){
-      setIsLoading(true)
-      setError("")
+     
       try {
-        const response = await fetch(api_url+`s=${query}`)
+        setIsLoading(true)
+        setError("")
+
+        const response = await fetch(api_url+`s=${query}`,{signal:controller.signal})
   
         if(!response.ok){
           throw new Error ("something went wrong with fetching lovie list")
         }
         const data = await response.json()
         setMovies(data.Search)
+        setError("")
   
         if(data.response ==="False" ) throw new Error("Movie not found")
         
       } catch (err) {
         setError(err.message)
+
+        if(err.name !== "AbortError"){
+          setError(err.message)
+        }
       }
       finally{
         setIsLoading(false) 
       }
+
+
       if(query.length<3){
         setMovies([])
         setError("")
@@ -86,6 +96,9 @@ function handleDeleteWatched (id){
       
     }
     searchMovies()
+    return function(){
+      controller.abort()
+    }
   },[query])
 
 
