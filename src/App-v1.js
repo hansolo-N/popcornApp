@@ -43,6 +43,17 @@ function ErrorMessage({message}){
   </p>
 
 }
+
+function handleAddWatch(movie){
+  setWatched((watched)=>[...watched,movie])
+}
+
+function handleDeleteWatched (id){
+  setWatched(watched.filter((movie)=>movie.imdbID !== id))
+}
+
+
+
   //api request to fetch movie data
 //loads movie data on mount
   useEffect(function(){
@@ -93,10 +104,16 @@ function ErrorMessage({message}){
           {error && <ErrorMessage message={error}/>}
         </Box>
         <Box>
-          {selectId ? <MovieDetails selectedId={selectId} handleCloseMovie={handleCloseMovie}/>:
+          {selectId ? 
+          <MovieDetails 
+          selectedId={selectId} 
+          handleCloseMovie={handleCloseMovie} 
+          onAddWatched ={handleAddWatch} 
+          watched={watched}
+          />:
           <>
           <Summary watched={watched}/>
-          <WatchedMoviesList watched={watched}/>
+          <WatchedMoviesList watched={watched} handleDelete = {handleDeleteWatched}/>
           </>
           }
           

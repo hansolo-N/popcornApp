@@ -5,9 +5,15 @@ import Loader from './Loader'
 
 const api_url = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&`
 
-function MovieDetails({selectedId,handleCloseMovie}) {
+function MovieDetails({selectedId,handleCloseMovie,onAddWatched,watched,handleDelete}) {
 const [movie,setMovie] = useState('')
 const [isLoading,setIsLoading] = useState(false)
+const [userRating,setUserRating] = useState(null)
+
+const isWatched = watched.map((movie)=>movie.imdbID).includes(selectedId)
+
+const watchedUserRating = watched.find((movie)=> movie.imdbID===selectedId)?.userRating
+
 
 const {Title:title,
   Year:year, 
@@ -20,7 +26,6 @@ const {Title:title,
   Director:director,
   Genre:genre} = movie
 
-  console.log(title,runtime)
 useEffect(function(){
 
 async function getMovieDetails(id){
@@ -36,8 +41,32 @@ async function getMovieDetails(id){
   }
   
 }
+
 getMovieDetails(selectedId)
+
 },[selectedId])
+
+function handleAdd(){
+  const newWatchedMovie = {
+    imdbID:selectedId,
+    Title:title,
+    year,
+    imdbRating: Number(imdbRating),
+    runtime: Number(runtime.split(" ").at(0)),
+    Poster:poster,
+    userRating
+
+  }
+
+onAddWatched(newWatchedMovie)
+handleCloseMovie()
+}
+
+function handleUserRating(rating){
+  setUserRating(rating)
+}
+
+
 
   return (
     <div className='details'>
@@ -49,7 +78,7 @@ getMovieDetails(selectedId)
         <img src={poster} alt={`Poster of ${movie} movie`}></img>
         <div className='details-overview'>
           <h2>{title}</h2>
-          <p>{released}&bull;{runtime}</p>
+          <p>{released}&bull;{runtime}&bull;{year}</p>
           <p>{genre}</p>
           <p><span>⭐</span>{imdbRating} Imdb rating</p>
         </div>
@@ -57,13 +86,23 @@ getMovieDetails(selectedId)
       </header>
       <section>
         <div className='rating'>
-        <Rating numStars={10} size={25}/>
+          {!isWatched?(
+            <>
+            <Rating numStars={10} size={25} getUserRating={handleUserRating}/>
+        {
+          userRating > 0  && (<button className='btn-add' onClick={()=>handleAdd(movie)}>+add to List</button>)
+        }{" "}</>
+          ):(
+            <p>you have already rated the movie, you have given it a rating of ⭐{watchedUserRating}</p>
+          )}
+        
+        
         </div>
         <p><em>{plot}</em></p>
         <p>starring {actors}</p>
         <p>directed by {director}</p>
       </section>
-      {selectedId}
+      {/* {selectedId} */}
       </>}
  
     </div>

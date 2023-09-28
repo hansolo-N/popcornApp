@@ -36,7 +36,8 @@ export default function Rating(
     className ="",
     messages =[],
     defaultRating = 0,
-    onSetRating
+    onSetRating,
+    getUserRating
   })
 {
   const [rating, setRating] = useState(defaultRating);
@@ -44,6 +45,7 @@ export default function Rating(
 
   function handleRating(rating) {
     setRating(rating);
+    getUserRating(rating)
     // onSetRating(rating)
   }
 
