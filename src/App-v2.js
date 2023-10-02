@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from 'react';
 import Logo from './components/Logo'
 import Search from './components/Search'
 import Results from './components/Results'
@@ -11,7 +11,7 @@ import WatchedMoviesList from './components/WatchedMoviesList'
 import Main from "./components/Main";
 import MovieDetails from "./components/MovieDetails";
 import { useMovies } from "./useMovies";
-
+import { useLocalStorageState } from "./useLocalStorageState";
   
 
 
@@ -23,10 +23,12 @@ export default function App() {
   const [selectId,setSelectedId] = useState(null)
   const {movies,isLoading,error} = useMovies(query,handleCloseMovie)
 
-  const [watched, setWatched] = useState(function(){
-  const localMoviesStorage = localStorage.getItem('watched')
-    return JSON.parse(localMoviesStorage)
-  })
+  const [watched,setWatched] = useLocalStorageState([],"watched")
+
+  // const [watched, setWatched] = useState(function(){
+  // const localMoviesStorage = localStorage.getItem('watched')
+  //   return JSON.parse(localMoviesStorage)
+  // })
 
 
 function handleId(id){
@@ -54,16 +56,6 @@ function handleAddWatch(movie){
 function handleDeleteWatched (id){
   setWatched(watched.filter((movie)=>movie.imdbID !== id))
 }
-
-useEffect(function(){
-  localStorage.setItem('watched',JSON.stringify(watched))
-},[watched])
-
-
-  //api request to fetch movie data
-//loads movie data on mount
-
-
 
 
   return (
