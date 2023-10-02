@@ -25,8 +25,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectId,setSelectedId] = useState(null)
   const [error, setError] = useState("");
+
   const [watched, setWatched] = useState(function(){
-    const localMoviesStorage = localStorage.getItem('watched')
+  const localMoviesStorage = localStorage.getItem('watched')
     return JSON.parse(localMoviesStorage)
   })
 
@@ -58,7 +59,7 @@ function handleDeleteWatched (id){
 }
 
 useEffect(function(){
-  localStorage.setItem('watched',JSON.stringify([watched]))
+  localStorage.setItem('watched',JSON.stringify(watched))
 },[watched])
 
 
