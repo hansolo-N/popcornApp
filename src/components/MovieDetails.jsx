@@ -1,11 +1,10 @@
-import React from 'react'
-import { useEffect,useState } from 'react'
+import { useEffect,useState,useRef} from 'react'
 import Rating from "./rating/Rating"
 import Loader from './Loader'
 
 const api_url = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&`
 
-function MovieDetails({selectedId,handleCloseMovie,onAddWatched,watched,handleDelete}) {
+function MovieDetails({selectedId,handleCloseMovie,onAddWatched,watched}) {
 const [movie,setMovie] = useState('')
 const [isLoading,setIsLoading] = useState(false)
 const [userRating,setUserRating] = useState(null)
@@ -14,6 +13,11 @@ const isWatched = watched.map((movie)=>movie.imdbID).includes(selectedId)
 
 const watchedUserRating = watched.find((movie)=> movie.imdbID===selectedId)?.userRating
 
+const countRef = useRef(0)
+
+useEffect(function(){
+  if(userRating)countRef.current = countRef.current + 1
+},[userRating])
 
 const {Title:title,
   Year:year, 
