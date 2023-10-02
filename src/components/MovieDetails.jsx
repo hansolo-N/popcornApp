@@ -57,6 +57,19 @@ useEffect(function(){
   
 },[title])
 
+useEffect(function(){
+  function callback(e){
+    if(e.code==="Escape"){
+      handleCloseMovie()
+    }
+  }
+
+  document.addEventListener('keydown',callback)
+
+  return function (){
+    document.removeEventListener('keydown',callback)
+  }
+},[handleCloseMovie]) 
 
 function handleAdd(){
   const newWatchedMovie = {

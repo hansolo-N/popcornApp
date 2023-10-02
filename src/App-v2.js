@@ -21,10 +21,14 @@ const api_url = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  ;
   const [isLoading, setIsLoading] = useState(false);
   const [selectId,setSelectedId] = useState(null)
   const [error, setError] = useState("");
+  const [watched, setWatched] = useState(function(){
+    const localMoviesStorage = localStorage.getItem('watched')
+    return JSON.parse(localMoviesStorage)
+  })
 
 
 function handleId(id){
@@ -46,12 +50,16 @@ function ErrorMessage({message}){
 
 function handleAddWatch(movie){
   setWatched((watched)=>[...watched,movie])
+  // localStorage.setItem('watched',JSON.stringify([...watched,movie]))
 }
 
 function handleDeleteWatched (id){
   setWatched(watched.filter((movie)=>movie.imdbID !== id))
 }
 
+useEffect(function(){
+  localStorage.setItem('watched',JSON.stringify([watched]))
+},[watched])
 
 
   //api request to fetch movie data
