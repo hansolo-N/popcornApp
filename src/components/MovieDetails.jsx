@@ -16,7 +16,7 @@ const watchedUserRating = watched.find((movie)=> movie.imdbID===selectedId)?.use
 const countRef = useRef(0)
 
 useEffect(function(){
-  if(userRating)countRef.current = countRef.current + 1
+  if(userRating)countRef.current = countRef.current++
 },[userRating])
 
 const {Title:title,
@@ -83,7 +83,8 @@ function handleAdd(){
     imdbRating: Number(imdbRating),
     runtime: Number(runtime.split(" ").at(0)),
     Poster:poster,
-    userRating
+    userRating,
+    countingRatingDecisions: countRef.current,
 
   }
 
