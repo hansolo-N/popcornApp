@@ -1,6 +1,7 @@
 import { useEffect,useState,useRef} from 'react'
 import Rating from "./rating/Rating"
 import Loader from './Loader'
+import { useKey } from '../useKey'
 
 const api_url = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_API_KEY}&`
 
@@ -61,19 +62,7 @@ useEffect(function(){
   
 },[title])
 
-useEffect(function(){
-  function callback(e){
-    if(e.code==="Escape"){
-      handleCloseMovie()
-    }
-  }
-
-  document.addEventListener('keydown',callback)
-
-  return function (){
-    document.removeEventListener('keydown',callback)
-  }
-},[handleCloseMovie]) 
+useKey("Escape",handleCloseMovie) 
 
 function handleAdd(){
   const newWatchedMovie = {
